@@ -125,10 +125,14 @@ function build_chaincode_image() {
 
   push_fn "Building chaincode image ${cc_image}"
 
-  $CONTAINER_CLI build ${CONTAINER_NAMESPACE} -t "lonelymj/${cc_name}:latest" ${cc_folder}
+  $CONTAINER_CLI build ${CONTAINER_NAMESPACE} -t ${cc_image} ${cc_folder}
+  
+  push_fn "tag lonelymj/${cc_name}:latest"
+  $CONTAINER_CLI ${CONTAINER_NAMESPACE} tag  ${cc_name} "lonelymj/${cc_name}:latest"
 
-  log "push lonelymj/${cc_name}:latest"
+  push_fn "push lonelymj/${cc_name}:latest"
   $CONTAINER_CLI ${CONTAINER_NAMESPACE} push "lonelymj/${cc_name}:latest"
+
 
   pop_fn
 }
