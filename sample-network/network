@@ -34,15 +34,15 @@ function context() {
 context FABRIC_VERSION            2.5.8
 context FABRIC_CA_VERSION         1.5.11
 
-context CLUSTER_RUNTIME           kind                  # or k3s for Rancher
-context CONTAINER_CLI             docker                # or nerdctl for containerd
-context CONTAINER_NAMESPACE       ""                    # or "--namespace k8s.io" for containerd / nerdctl
-context STORAGE_CLASS             standard
+context CLUSTER_RUNTIME           k3s                  # or k3s for Rancher
+context CONTAINER_CLI             nerdctl                # or nerdctl for containerd
+context CONTAINER_NAMESPACE       "--namespace k8s.io"                    # or "--namespace k8s.io" for containerd / nerdctl
+context STORAGE_CLASS             local-path
 context KUSTOMIZE_BUILD           "kubectl kustomize"
 context STAGE_DOCKER_IMAGES       false
 context FABRIC_CONTAINER_REGISTRY hyperledger
 
-context NAME                      test-network
+context NAME                      miaoyin-fabric-network
 context NS                        $NAME
 context CLUSTER_NAME              $CLUSTER_RUNTIME
 context CLUSTER_IMAGE             kindest/node:v1.25.3  # Pin k8s to v1.25.x
@@ -64,7 +64,7 @@ context CONSOLE_USERNAME          admin
 context CONSOLE_PASSWORD          password
 
 # TODO: use new cc logic from test-network
-context CHANNEL_NAME              mychannel
+context CHANNEL_NAME              miaoyin
 context ORDERER_TIMEOUT           15s
 context CHAINCODE_NAME            asset-transfer-basic
 context CHAINCODE_IMAGE           ghcr.io/hyperledgendary/fabric-ccaas-asset-transfer-basic:latest
