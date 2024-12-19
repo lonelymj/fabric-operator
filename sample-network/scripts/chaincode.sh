@@ -133,6 +133,7 @@ function build_chaincode_image() {
   push_fn "push lonelymj/${cc_name}:latest"
   $CONTAINER_CLI ${CONTAINER_NAMESPACE} push "lonelymj/${cc_name}:latest"
 
+  export CHAINCODE_IMAGE="lonelymj/"${cc_name}":latest"
 
   pop_fn
 }
