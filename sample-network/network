@@ -31,8 +31,8 @@ function context() {
   export ${name}="${!override_name:-${default_value}}"
 }
 
-context FABRIC_VERSION            2.5.8
-context FABRIC_CA_VERSION         1.5.11
+context FABRIC_VERSION            2.5.10
+context FABRIC_CA_VERSION         1.5.13
 
 context CLUSTER_RUNTIME           k3s                  # or k3s for Rancher
 context CONTAINER_CLI             nerdctl                # or nerdctl for containerd
@@ -47,7 +47,7 @@ context NS                        $NAME
 context CLUSTER_NAME              $CLUSTER_RUNTIME
 context CLUSTER_IMAGE             kindest/node:v1.25.3  # Pin k8s to v1.25.x
 context KUBE_DNS_DOMAIN           ${NS}.svc.cluster.local
-context INGRESS_DOMAIN            miaoyinchain.com
+context INGRESS_DOMAIN            localho.st
 context COREDNS_DOMAIN_OVERRIDE   true
 context LOG_FILE                  network.log
 context DEBUG_FILE                network-debug.log
