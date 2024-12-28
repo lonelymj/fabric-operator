@@ -96,10 +96,10 @@ function query_chaincode_metadata() {
   export_peer_context 1 1
   peer chaincode query -n $cc_name -C $CHANNEL_NAME -c $args
 #
- log ''
- log 'Org1-Peer2:'
- export_peer_context 1 2
- peer chaincode query -n $cc_name -C $CHANNEL_NAME -c $args
+#  log ''
+#  log 'Org1-Peer2:'
+#  export_peer_context 1 2
+#  peer chaincode query -n $cc_name -C $CHANNEL_NAME -c $args
 }
 
 function invoke_chaincode() {
