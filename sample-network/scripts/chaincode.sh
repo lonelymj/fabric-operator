@@ -252,7 +252,7 @@ function launch_chaincode() {
   local cc_image=$3
 
   launch_chaincode_service ${org} peer1 ${cc_name} ${cc_id} ${cc_image}
-#  launch_chaincode_service ${org} peer2 ${cc_name} ${cc_id} ${cc_image}
+  launch_chaincode_service ${org} peer2 ${cc_name} ${cc_id} ${cc_image}
 }
 
 function install_chaincode_for() {
@@ -274,7 +274,7 @@ function install_chaincode() {
   local cc_package=$1
 
   install_chaincode_for ${org} 1 ${cc_package}
-#  install_chaincode_for ${org} 2 ${cc_package}
+  install_chaincode_for ${org} 2 ${cc_package}
 }
 
 # approve the chaincode package for an org and assign a name
