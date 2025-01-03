@@ -5,7 +5,7 @@ function explorer_config() {
   sed -e "s/\${NETWORK_NAME}/$NETWORK_NAME/" \
       -e "s/\${CHANNEL_NAME}/$CHANNEL_NAME/" \
       -e "s/\${IMAGE_VERSION}/$IMAGE_VERSION/" \
-      kube/explorer/blockchain-explorer-template.yaml
+      config/explorer/blockchain-explorer-template.yaml
 }
 
 function start_explorer() {
@@ -31,15 +31,15 @@ function start_explorer() {
   # kubectl -n fabric-network create configmap explorer-tlsca-config --from-file=/data/source/fabric-samples/test-network-k8s/build/channel-msp/peerOrganizations/org1/msp/tlscacerts
 
   kubectl -n $NS delete configmap explorer-config || true
-  echo "$(explorer_config $NS $CHANNEL_NAME $version)" > kube/explorer/blockchain-explorer.yaml
+  echo "$(explorer_config $NS $CHANNEL_NAME $version)" > config/explorer/blockchain-explorer.yaml
   pop_fn
 
   push_fn "Start explorer pgsql"
-  kubectl -n $NS apply -f kube/explorer/blockchain-pgsql.yaml
+  kubectl -n $NS apply -f config/explorer/blockchain-pgsql.yaml
   pop_fn
 
   push_fn "Start explorer"
-  kubectl -n $NS apply -f kube/explorer/blockchain-explorer.yaml
+  kubectl -n $NS apply -f config/explorer/blockchain-explorer.yaml
   pop_fn
 }
 
