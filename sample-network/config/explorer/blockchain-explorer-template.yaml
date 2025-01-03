@@ -88,7 +88,7 @@ data:
           "tlsCACerts": {
             "path": "/tmp/crypto/channel-msp/peerOrganizations/org1/msp/tlscacerts/tlsca-signcert.pem"
           },
-          "url": "grpcs://miaoyin-fabric-network-org0-orderersnode1-orderer.localho.st:443"
+          "url": "grpcs://miaoyin-fabric-network-org1-peer1-peer.localho.st:443"
         }
       }
     }
