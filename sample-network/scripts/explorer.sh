@@ -34,15 +34,15 @@ function start_explorer() {
   echo "$(explorer_config $NS $CHANNEL_NAME $version)" > config/explorer/blockchain-explorer.yaml
   pop_fn
 
-  apply_kustomization config/explorer
+  # apply_kustomization config/explorer
 
-  # push_fn "Start explorer pgsql"
-  # kubectl -n $NS apply -f config/explorer/blockchain-pgsql.yaml
-  # pop_fn
+  push_fn "Start explorer pgsql"
+  kubectl -n $NS apply -f config/explorer/blockchain-pgsql.yaml
+  pop_fn
 
-  # push_fn "Start explorer"
-  # kubectl -n $NS apply -f config/explorer/blockchain-explorer.yaml
-  # pop_fn
+  push_fn "Start explorer"
+  kubectl -n $NS apply -f config/explorer/blockchain-explorer.yaml
+  pop_fn
 }
 
 function renew_explorer_cm() {
