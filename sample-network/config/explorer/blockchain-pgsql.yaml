@@ -39,14 +39,9 @@ spec:
           ports:
             - containerPort: 5432
           volumeMounts:
-            - name: localtime
-              mountPath: /etc/localtime
             - name: explorerdb
               mountPath: /var/lib/postgresql/data
       volumes:
-        - name: localtime
-          hostPath:
-            path: /usr/share/zoneinfo/Asia/Shanghai
         - name: explorerdb
           persistentVolumeClaim:
             claimName: explorerdb-pv-claim

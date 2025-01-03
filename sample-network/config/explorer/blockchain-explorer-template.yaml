@@ -143,8 +143,6 @@ spec:
           ports:
             - containerPort: 8080
           volumeMounts:
-            - name: localtime
-              mountPath: /etc/localtime
             - name: crypto
               mountPath: /tmp/crypto
             - name: wallet
@@ -165,9 +163,6 @@ spec:
               mountPath: /tmp/crypto/channel-msp/peerOrganizations/org1/msp/tlscacerts/tlsca-signcert.pem
               subPath: tlsca-signcert.pem
       volumes:
-        - name: localtime
-          hostPath:
-            path: /usr/share/zoneinfo/Asia/Shanghai
         - name: wallet
           persistentVolumeClaim:
             claimName: explorer-wallet-pv-claim
