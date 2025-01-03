@@ -142,6 +142,7 @@ function print_help() {
 . scripts/test_network.sh
 . scripts/channel.sh
 . scripts/chaincode.sh
+. scripts/explorer.sh
 
 # check for kind, kubectl, etc.
 check_prereqs
@@ -196,6 +197,12 @@ elif [ "${MODE}" == "console" ]; then
   log "Launching Fabric Operations Console"
   console_up
   log "🏁 - Console is ready"
+# ./network explorer
+elif [ "${MODE}" == "explorer" ]; then
+  log "Starting explorer:"
+  log "Image version: ${2}"
+  start_explorer $@
+  log "🏁 - Explorer started."
 
 else
   print_help

@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: explorerdb-pv-claim
+  namespace: miaoyin-fabric-network
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+ 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: explorerdb
+  namespace: miaoyin-fabric-network
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: explorerdb
+  template:
+    metadata:
+      labels:
+        app: explorerdb
+    spec:
+      containers:
+        - name: explorerdb
+          image: ghcr.io/hyperledger-labs/explorer-db:latest
+          env:
+            - name: DATABASE_DATABASE
+              value: fabricexplorer
+            - name: DATABASE_USERNAME
+              value: hppoc
+            - name: DATABASE_PASSWORD
+              value: p@88w0rd
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: localtime
+              mountPath: /etc/localtime
+            - name: explorerdb
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: localtime
+          hostPath:
+            path: /usr/share/zoneinfo/Asia/Shanghai
+        - name: explorerdb
+          persistentVolumeClaim:
+            claimName: explorerdb-pv-claim
+ 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: explorerdb-service
+  namespace: miaoyin-fabric-network
+spec:
+  selector:
+    app: explorerdb
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432

@@ -1,0 +1,183 @@
+{
+    "name": "fabric-network",
+    "version": "1.0.0",
+    "client": {
+        "organization": "Org1",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                },
+                "orderer": "300"
+            }
+        }
+    },
+    "channels": {
+        "miaoyin": {
+            "orderers": [
+                "org0-orderersnode1",
+                "org0-orderersnode1",
+                "org0-orderersnode2"
+            ],
+            "peers": {
+                "org1-peer1": {
+                	"endorsingPeer": true,
+                	"chaincodeQuery": true,
+                	"ledgerQuery": true,
+                	"eventSource": true
+                },
+                "org1-peer2": {
+                    "endorsingPeer": true,
+                    "chaincodeQuery": true,
+                    "ledgerQuery": true,
+                    "eventSource": true
+                }
+            }
+        }
+    },
+    "organizations": {
+        "Org1": {
+            "mspid": "Org1MSP",
+            "peers": [
+                "org1-peer1",
+                "org1-peer2"
+            ],
+            "certificateAuthorities": [
+                "org1-ca"
+            ],
+            "adminPrivateKeyPEM": {
+                "path": "/data/source/fabric-operator/sample-network/temp/enrollments/org1/users/org1admin/msp/keystore/key.pem"
+            },
+            "signedCertPEM": {
+                "path": "/data/source/fabric-operator/sample-network/temp/enrollments/org1/users/org1admin/msp/signcerts/cert.pem"
+            }
+        }
+    },
+    "orderers": {
+        "org0-orderersnode1": {
+            "url": "grpcs://miaoyin-fabric-network-org0-orderersnode1-orderer.miaoyinchain.com:443",
+            "mspid": "OrdererMSP",
+            "grpcOptions": {
+                "ssl-target-name-override": "org0-orderersnode1.localho.st",
+                "hostnameOverride": "org0-orderersnode1.localho.st"
+            },
+            "tlsCACerts": {
+                "path": "/data/source/fabric-operator/sample-network/temp/channel-msp/ordererOrganizations/org0/msp/tlscacerts/tlsca-signcert.pem"
+            },
+            "adminPrivateKeyPEM": {
+                "path": "/data/source/fabric-operator/sample-network/temp/enrollments/org0/users/org0admin/msp/keystore/key.pem"
+            },
+            "signedCertPEM": {
+                "path": "/data/source/fabric-operator/sample-network/temp/enrollments/org0/users/org0admin/msp/signcerts/cert.pem"
+            }
+        },
+        "org0-orderersnode2": {
+            "url": "grpcs://miaoyin-fabric-network-org0-orderersnode2-orderer.miaoyinchain.com:443",
+            "mspid": "OrdererMSP",
+            "grpcOptions": {
+                "ssl-target-name-override": "org0-orderersnode2.localho.st",
+                "hostnameOverride": "org0-orderersnode2.localho.st"
+            },
+            "tlsCACerts": {
+                "path": "/data/source/fabric-operator/sample-network/temp/channel-msp/ordererOrganizations/org0/msp/tlscacerts/tlsca-signcert.pem"
+            },
+            "adminPrivateKeyPEM": {
+                "path": "/data/source/fabric-operator/sample-network/temp/enrollments/org0/users/org0admin/msp/keystore/key.pem"
+            },
+            "signedCertPEM": {
+                "path": "/data/source/fabric-operator/sample-network/temp/enrollments/org0/users/org0admin/msp/signcerts/cert.pem"
+            }
+        },
+        "org0-orderersnode3": {
+            "url": "grpcs://miaoyin-fabric-network-org0-orderersnode3-orderer.miaoyinchain.com:443",
+            "mspid": "OrdererMSP",
+            "grpcOptions": {
+                "ssl-target-name-override": "org0-orderersnode3.localho.st",
+                "hostnameOverride": "org0-orderersnode3.localho.st"
+            },
+            "tlsCACerts": {
+                "path": "/data/source/fabric-operator/sample-network/temp/channel-msp/ordererOrganizations/org0/msp/tlscacerts/tlsca-signcert.pem"
+            },
+            "adminPrivateKeyPEM": {
+                "path": "/data/source/fabric-operator/sample-network/temp/enrollments/org0/users/org0admin/msp/keystore/key.pem"
+            },
+            "signedCertPEM": {
+                "path": "/data/source/fabric-operator/sample-network/temp/enrollments/org0/users/org0admin/msp/signcerts/cert.pem"
+            }
+        }
+    },
+    "peers": {
+        "org1-peer1": {
+            "url": "grpcs://miaoyin-fabric-network-org1-peer1-peer.miaoyinchain.com:443",
+            "grpcOptions": {
+                "ssl-target-name-override": "miaoyin-fabric-network-org1-peer1-peer.miaoyinchain.com",
+                "hostnameOverride": "omiaoyin-fabric-network-org1-peer1-peer.miaoyinchain.com",
+                "request-timeout": 120001
+            },
+            "tlsCACerts": {
+                "path": "/data/source/fabric-operator/sample-network/temp/channel-msp/peerOrganizations/org1/msp/tlscacerts/tlsca-signcert.pem"
+            }
+        },
+        "org1-peer2": {
+            "url": "grpcs://miaoyin-fabric-network-org1-peer2-peer.miaoyinchain.com:443",
+            "grpcOptions": {
+                "ssl-target-name-override": "miaoyin-fabric-network-org1-peer2-peer.miaoyinchain.com",
+                "hostnameOverride": "miaoyin-fabric-network-org1-peer2-peer.miaoyinchain.com",
+                "request-timeout": 120001
+            },
+            "tlsCACerts": {
+                "path": "/data/source/fabric-operator/sample-network/temp/channel-msp/peerOrganizations/org1/msp/tlscacerts/tlsca-signcert.pem"
+            }
+        }
+    },
+    "certificateAuthorities": {
+        "org0-ca": {
+            "url": "https://miaoyin-fabric-network-org0-ca-ca.miaoyinchain.com:443",
+            "caName": "org0-ca",
+            "grpcOptions": {
+                "verify": true
+            },
+            "tlsCACerts": {
+                "path": "/data/source/fabric-operator/sample-network/temp/channel-msp/ordererOrganizations/org0/msp/tlscacerts/tlsca-signcert.pem"
+            },
+            "registrar": [
+                {
+                    "enrollId": "rcaadmin",
+                    "enrollSecret": "rcaadminpw"
+                }
+            ]
+        },
+        "org1-ca": {
+            "url": "https://miaoyin-fabric-network-org1-ca-ca.miaoyinchain.com:443",
+            "caName": "org1-ca",
+            "grpcOptions": {
+                "verify": true
+            },
+            "tlsCACerts": {
+                "path": "/data/source/fabric-operator/sample-network/temp/channel-msp/peerOrganizations/org1/msp/tlscacerts/tlsca-signcert.pem"
+            },
+            "registrar": [
+                {
+                    "enrollId": "rcaadmin",
+                    "enrollSecret": "rcaadminpw"
+                }
+            ]
+        },
+        "org2-ca": {
+            "url": "https://miaoyin-fabric-network-org2-ca-ca.miaoyinchain.com:443",
+            "caName": "org2-ca",
+            "grpcOptions": {
+                "verify": true
+            },
+            "tlsCACerts": {
+                "path": "/data/source/fabric-operator/sample-network/temp/channel-msp/peerOrganizations/org2/msp/tlscacerts/tlsca-signcert.pem"
+            },
+            "registrar": [
+                {
+                    "enrollId": "rcaadmin",
+                    "enrollSecret": "rcaadminpw"
+                }
+            ]
+        }
+    }
+}

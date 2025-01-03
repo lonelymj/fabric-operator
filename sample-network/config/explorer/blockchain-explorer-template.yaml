@@ -1,0 +1,220 @@
+#
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: explorer-wallet-pv-claim
+  namespace: ${NETWORK_NAME}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: explorer-crypto-pv-claim
+  namespace: ${NETWORK_NAME}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: explorer-config
+  namespace: ${NETWORK_NAME}
+data:
+  config.json: |
+    {
+      "network-configs": {
+        "miaoyin": {
+          "name": "MiaoYin",
+          "profile": "./connection-profile/miaoyin-network.json"
+        }
+      },
+      "license": "Apache-2.0"
+    }
+  miaoyin-network.json: |
+    {
+      "name": "miaoyin",
+      "version": "1.0.0",
+      "client": {
+        "tlsEnable": true,
+        "adminCredential": {
+          "id": "exploreradmin",
+          "password": "exploreradminpw"
+        },
+        "enableAuthentication": false,
+        "organization": "Org1MSP",
+        "connection": {
+          "timeout": {
+            "peer": {
+              "endorser": "300"
+            },
+            "orderer": "300"
+          }
+        }
+      },
+      "channels": {
+        "${CHANNEL_NAME}": {
+          "peers": {
+            "peer0.org1.example.com": {}
+          }
+        }
+      },
+      "organizations": {
+        "Org1MSP": {
+          "mspid": "Org1MSP",
+          "adminPrivateKey": {
+            "path": "/tmp/crypto/enrollments/org1/users/org1admin/msp/keystore/key.pem"
+          },
+          "peers": ["peer0.org1.example.com"],
+          "signedCert": {
+            "path": "/tmp/crypto/enrollments/org1/users/org1admin/msp/signcerts/cert.pem"
+          }
+        }
+      },
+      "peers": {
+        "peer0.org1.example.com": {
+          "tlsCACerts": {
+            "path": "/tmp/crypto/channel-msp/peerOrganizations/org1/msp/tlscacerts/tlsca-signcert.pem"
+          },
+          "url": "grpcs://miaoyin-fabric-network-org0-orderersnode1-orderer.localho.st:443"
+        }
+      }
+    }
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  explorer
+  namespace: ${NETWORK_NAME}
+  labels:
+    app:  explorer
+spec:
+  selector:
+    matchLabels:
+      app: explorer
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: explorer
+    spec:
+      # initContainers:
+        # Init containers are exactly like regular containers, except:
+          # - Init containers always run to completion.
+          # - Each init container must complete successfully before the next one starts.
+      containers:
+        - name: explorer
+          image: 192.168.0.205:30002/library/miaoyin-blockchain-explorer:${IMAGE_VERSION}
+          env:
+            - name: DATABASE_HOST
+              value: explorerdb-service
+            - name: DATABASE_DATABASE
+              value: fabricexplorer
+            - name: DATABASE_USERNAME
+              value: hppoc
+            - name: DATABASE_PASSWD
+              value: p@88w0rd
+            - name: LOG_LEVEL_APP
+              value: info
+            - name: LOG_LEVEL_DB
+              value: info
+            - name: LOG_LEVEL_CONSOLE
+              value: debug
+            - name: LOG_CONSOLE_STDOUT
+              value: "true"
+            - name: DISCOVERY_AS_LOCALHOST
+              value: "false"
+            - name: PORT
+              value: "8080"
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: localtime
+              mountPath: /etc/localtime
+            - name: crypto
+              mountPath: /tmp/crypto
+            - name: wallet
+              mountPath: /opt/explorer/wallet
+            - name: explorer-config
+              mountPath: /opt/explorer/app/platform/fabric/config.json
+              subPath: config.json
+            - name: explorer-config
+              mountPath: /opt/explorer/app/platform/fabric/connection-profile/miaoyin-network.json
+              subPath: miaoyin-network.json
+            - name: key
+              mountPath: /tmp/crypto/enrollments/org1/users/org1admin/msp/keystore/key.pem
+              subPath: key.pem
+            - name: cert
+              mountPath: /tmp/crypto/enrollments/org1/users/org1admin/msp/signcerts/cert.pem
+              subPath: cert.pem
+            - name: tlsca
+              mountPath: /tmp/crypto/channel-msp/peerOrganizations/org1/msp/tlscacerts/tlsca-signcert.pem
+              subPath: tlsca-signcert.pem
+      volumes:
+        - name: localtime
+          hostPath:
+            path: /usr/share/zoneinfo/Asia/Shanghai
+        - name: wallet
+          persistentVolumeClaim:
+            claimName: explorer-wallet-pv-claim
+        - name: crypto
+          persistentVolumeClaim:
+            claimName: explorer-crypto-pv-claim
+        - name: explorer-config
+          configMap:
+            name: explorer-config
+        - name: key
+          configMap:
+            name: explorer-key-config
+        - name: cert
+          configMap:
+            name: explorer-cert-config
+        - name: tlsca
+          configMap:
+            name: explorer-tlsca-config
+          
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: explorer
+  namespace: ${NETWORK_NAME}
+spec:
+  selector:
+    app: explorer
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: explorer-node
+  namespace: ${NETWORK_NAME}
+spec:
+  type: NodePort
+  selector:
+    app: explorer
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 32201

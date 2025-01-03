@@ -1,0 +1,60 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: explorer-selfsigned
+  namespace: fabric-network
+spec:
+  acme:
+    # The ACME server URL
+    server: https://acme-v02.api.letsencrypt.org/directory
+    # Email address used for ACME registration 欢迎关注·云原生生态圈
+    email: 511639411@qq.com
+    # Name of a secret used to store the ACME account private key
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    # Enable the HTTP-01 challenge provider
+    solvers:
+      - http01:
+          ingress:
+            class: explorer-ingress
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: explorer-selfsigned-cert
+  namespace: fabric-network
+spec:
+  dnsNames:
+    - explorer.miaoyinchain.com
+  secretName: explorer-selfsigned-cert-tls
+  issuerRef:
+    name: explorer-selfsigned
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: explorer-ingress
+  namespace: fabric-network
+  labels:
+    exposed_by: ingress
+  annotations:
+    nginx.ingress.kubernetes.io/service-upstream: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/cluster-issuer: "explorer-selfsigned" #此处我们是基于issuer颁发一个prod的证书
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - explorer.miaoyinchain.com
+      secretName: explorer-selfsigned-cert
+  rules:
+    - host: explorer.miaoyinchain.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: explorer
+                port:
+                  number: 8080
