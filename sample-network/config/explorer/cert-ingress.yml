@@ -2,7 +2,7 @@ apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: explorer-selfsigned
-  namespace: fabric-network
+  namespace: miaoyin-fabric-network
 spec:
   acme:
     # The ACME server URL
@@ -22,7 +22,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: explorer-selfsigned-cert
-  namespace: fabric-network
+  namespace: miaoyin-fabric-network
 spec:
   dnsNames:
     - explorer.miaoyinchain.com
@@ -34,7 +34,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: explorer-ingress
-  namespace: fabric-network
+  namespace: miaoyin-fabric-network
   labels:
     exposed_by: ingress
   annotations:

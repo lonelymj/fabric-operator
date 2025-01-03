@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: explorer-ingress
-  namespace: fabric-network
+  namespace: miaoyin-fabric-network
   annotations:
     nginx.ingress.kubernetes.io/service-upstream: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /
