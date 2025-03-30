@@ -31,7 +31,7 @@ function deploy_chaincode() {
   set_chaincode_id        ${cc_package}
   set_chaincode_image     ${cc_folder}
 
-  build_chaincode_image   ${cc_folder} ${CHAINCODE_IMAGE}
+  build_chaincode_image   ${cc_folder} ${cc_name}
 
   if [ "${CLUSTER_RUNTIME}" == "kind" ]; then
     kind_load_image       ${CHAINCODE_IMAGE}
