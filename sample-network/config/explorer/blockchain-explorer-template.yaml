@@ -118,7 +118,7 @@ spec:
           # - Each init container must complete successfully before the next one starts.
       containers:
         - name: explorer
-          image: 192.168.0.205:30002/library/miaoyin-blockchain-explorer:${IMAGE_VERSION}
+          image: 192.168.0.205:30002/ks-devops-harbor/miaoyin-blockchain-explorer:${IMAGE_VERSION}
           env:
             - name: DATABASE_HOST
               value: explorerdb-service
