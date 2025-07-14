@@ -11,7 +11,7 @@ spec:
   tls:
     - hosts:
       - explorer.miaoyinchain.com
-      secretName: explorer-ingress-secret
+      secretName: miaoyinchain-secret
   rules:
     - host: explorer.miaoyinchain.com
       http:
