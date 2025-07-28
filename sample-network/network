@@ -143,6 +143,7 @@ function print_help() {
 . scripts/channel.sh
 . scripts/chaincode.sh
 . scripts/explorer.sh
+. scripts/explorer-v2.sh
 
 # check for kind, kubectl, etc.
 check_prereqs
@@ -202,6 +203,12 @@ elif [ "${MODE}" == "explorer" ]; then
   log "Starting explorer:"
   log "Image version: ${2}"
   start_explorer $@
+  log "🏁 - Explorer started."
+# ./network explorer v2
+elif [ "${MODE}" == "explorerv2" ]; then
+  log "Starting explorer:"
+  log "Image version: ${2}"
+  start_explorer_v2 $@
   log "🏁 - Explorer started."
 
 else
