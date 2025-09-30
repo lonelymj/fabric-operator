@@ -130,8 +130,8 @@ function build_chaincode_image() {
   push_fn "tag lonelymj/${cc_name}:latest"
   $CONTAINER_CLI ${CONTAINER_NAMESPACE} tag  ${cc_name} "lonelymj/${cc_name}:latest"
 
-  push_fn "push lonelymj/${cc_name}:latest"
-  $CONTAINER_CLI ${CONTAINER_NAMESPACE} push "lonelymj/${cc_name}:latest"
+  # push_fn "push lonelymj/${cc_name}:latest"
+  # $CONTAINER_CLI ${CONTAINER_NAMESPACE} push "lonelymj/${cc_name}:latest"
 
   export CHAINCODE_IMAGE="lonelymj/"${cc_name}":latest"
 
